@@ -1,0 +1,74 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_INIT
+AC_CONFIG_SRCDIR([src])
+AC_CANONICAL_SYSTEM
+
+VERSION=`cat src/version.h | grep "#define VERSION " | sed -e 's/^.*\"\(.*\)\"/\1/'`
+
+AC_SUBST(VERSION)
+AM_INIT_AUTOMAKE(pam_obc, ${VERSION})
+AC_CONFIG_HEADER(config.h)
+
+# Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+AC_LANG_C
+AC_PROG_MAKE_SET
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_HEADER_SYS_WAIT
+
+AC_CHECK_HEADERS([stdio.h stdlib.h syslog.h string.h unistd.h sys/types.h pwd.h signal.h security/pam_modules.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_HEADER_TIME
+
+# Checks for library functions.
+AC_PROG_GCC_TRADITIONAL
+AC_FUNC_MALLOC
+AC_FUNC_SELECT_ARGTYPES
+AC_FUNC_STAT
+AC_TYPE_SIGNAL
+AC_FUNC_STRFTIME
+AC_FUNC_FORK
+AC_FUNC_REALLOC
+AC_TYPE_PID_T
+AC_TYPE_SIZE_T
+AC_STRUCT_TM
+
+AC_CHECK_FUNCS([strstr strcmp sizeof snprintf malloc])
+
+
+AC_CHECK_LIB(pam, main,,AC_MSG_ERROR(Cannot link to libpam.))
+AC_CHECK_LIB(pam_misc, main,,AC_MSG_ERROR(Cannot link to libpam_misc))
+
+AC_DEFINE_UNQUOTED(CONFIG_FILE_PATH, "`eval echo "${sysconfdir}/pam_obc.conf"`", [pam_obc.conf file]) 
+
+AC_DEFINE_UNQUOTED(PACKAGE_NAME, "pam_obn" )
+AC_DEFINE_UNQUOTED(PACKAGE_STRING, "pam_obc $VERSION")
+AC_DEFINE_UNQUOTED(PACKAGE_BUGREPORT, "cclark@quadrantsec.com" )
+AC_DEFINE_UNQUOTED(PACKAGE_TARNAME, "pam_obc" )
+AC_DEFINE_UNQUOTED(PACKAGE_VERSION, "$VERSION" )
+
+AC_CONFIG_FILES([ \
+Makefile \
+src/Makefile])
+
+
+# AC_OUTPUT(Makefile)
+AC_OUTPUT
+
+#AC_MSG_RESULT([])
+#AC_MSG_RESULT([  ,-._,-.    Sagan has been configured!])
+#AC_MSG_RESULT([  \/)"(\/ ])
+#AC_MSG_RESULT([   (_o_)     Champ Clark III & The Quadrant InfoSec Team [[quadrantsec.com]]])
+#AC_MSG_RESULT([   /   \/)   Copyright (C) 2009-2013 Quadrant Information Security, et al.])
+#AC_MSG_RESULT([  (|| ||) ])
+#AC_MSG_RESULT([   oo-oo  ]) 
+#AC_MSG_RESULT([])
+
+

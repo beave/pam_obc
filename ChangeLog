@@ -1,0 +1,7 @@
+
+06/22/2009 - Autotools (autoconf, automake, etc) support added. 
+	     (Champ Clark - champ@softwink.com)
+
+	     Added signal trap support (Champ Clark - champ@softwink.com)
+
+

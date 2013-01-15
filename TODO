@@ -1,0 +1,7 @@
+* Add pam_obc.conf capability to user's home dir (i.e., ~/.pam_obc/pam_obc.conf
+* Create pam_obc SELinux context
+* Add random challenge (one-time password) cache option
+    User generates one or more challenge
+    User caches the challenges
+    pam_obc tries to match user's response to the challenge cache in addition
+      to out-of-band challenge
