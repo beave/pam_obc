@@ -64,14 +64,14 @@ DIST_SOURCES = $(pam_obc_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
-ACLOCAL = ${SHELL} /home/champ/code/pam-obc-0.5/missing --run aclocal-1.11
-AMTAR = ${SHELL} /home/champ/code/pam-obc-0.5/missing --run tar
-AUTOCONF = ${SHELL} /home/champ/code/pam-obc-0.5/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/champ/code/pam-obc-0.5/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/champ/code/pam-obc-0.5/missing --run automake-1.11
+ACLOCAL = ${SHELL} /home/champ/code/pam_obc/missing --run aclocal-1.11
+AMTAR = ${SHELL} /home/champ/code/pam_obc/missing --run tar
+AUTOCONF = ${SHELL} /home/champ/code/pam_obc/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/champ/code/pam_obc/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/champ/code/pam_obc/missing --run automake-1.11
 AWK = gawk
 CC = gcc
-CCDEPMODE = depmode=gcc3
+CCDEPMODE = depmode=none
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
@@ -93,7 +93,7 @@ LDFLAGS =
 LIBOBJS = 
 LIBS = -lpam_misc -lpam 
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/champ/code/pam-obc-0.5/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/champ/code/pam_obc/missing --run makeinfo
 MKDIR_P = /bin/mkdir -p
 OBJEXT = o
 PACKAGE = pam_obc
@@ -108,10 +108,10 @@ SET_MAKE =
 SHELL = /bin/sh
 STRIP = 
 VERSION = pamobc-0.2
-abs_builddir = /home/champ/code/pam-obc-0.5/src
-abs_srcdir = /home/champ/code/pam-obc-0.5/src
-abs_top_builddir = /home/champ/code/pam-obc-0.5
-abs_top_srcdir = /home/champ/code/pam-obc-0.5
+abs_builddir = /home/champ/code/pam_obc/src
+abs_srcdir = /home/champ/code/pam_obc/src
+abs_top_builddir = /home/champ/code/pam_obc
+abs_top_srcdir = /home/champ/code/pam_obc
 ac_ct_CC = gcc
 am__include = include
 am__leading_dot = .
@@ -138,7 +138,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/champ/code/pam-obc-0.5/install-sh
+install_sh = ${SHELL} /home/champ/code/pam_obc/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -249,18 +249,18 @@ distclean-compile:
 include ./$(DEPDIR)/pam_obc.Po
 
 .c.o:
-	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
-	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-#	source='$<' object='$@' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
-#	$(COMPILE) -c $<
+#	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
+#	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+	source='$<' object='$@' libtool=no \
+	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+	$(COMPILE) -c $<
 
 .c.obj:
-	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
-	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
-#	source='$<' object='$@' libtool=no \
-#	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
-#	$(COMPILE) -c `$(CYGPATH_W) '$<'`
+#	$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ `$(CYGPATH_W) '$<'`
+#	$(am__mv) $(DEPDIR)/$*.Tpo $(DEPDIR)/$*.Po
+	source='$<' object='$@' libtool=no \
+	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) \
+	$(COMPILE) -c `$(CYGPATH_W) '$<'`
 
 ID: $(HEADERS) $(SOURCES) $(LISP) $(TAGS_FILES)
 	list='$(SOURCES) $(HEADERS) $(LISP) $(TAGS_FILES)'; \
