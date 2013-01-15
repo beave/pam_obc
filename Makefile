@@ -109,7 +109,7 @@ AUTOHEADER = ${SHELL} /home/champ/code/pam_obc/missing --run autoheader
 AUTOMAKE = ${SHELL} /home/champ/code/pam_obc/missing --run automake-1.11
 AWK = gawk
 CC = gcc
-CCDEPMODE = depmode=none
+CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
 CPP = gcc -E
 CPPFLAGS = 
