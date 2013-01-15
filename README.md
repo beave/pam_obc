@@ -1,5 +1,9 @@
 *This file needs updating*
 
+Orignally By : Paul Sery <pgsery@swcp.com>
+Modified by  : Champ Clark <champ@quadrantsec.com>
+
+
 DESCRIPTION:
 
 Provides an out-of-band challenge-response authentication mechanism. 
