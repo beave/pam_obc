@@ -16,7 +16,8 @@ option is disabled,  then "Challenge" prompts will _only_ be sent to
 people in the /etc/pam_obc.conf.  If this option is disabled,  it'll make
 it easier for an attacker to enumerate users.
 
-To alter the behavior of pam_obc further,  see the pam_obc.h file.
+To alter the behavior of pam_obc further,  see the pam_obc.h file 
+(see https://github.com/beave/pam_obc/blob/master/src/pam_obc.h).
 
 DESCRIPTION:
 ------------
@@ -93,6 +94,7 @@ EXAMPLE 3: Challenge via Jabber/XMPP
 ------------------------------------
 
 In the pam_obc "extra" directory is a perl routine called "send-challenge".
+(See https://github.com/beave/pam_obc/blob/master/extra/send-challenge).
 The allows for communications with a Jabber server (for example, Google
 Talk).  I've used this routine with Jabber over SSL to send challenges in a
 more secure method.  The /etc/pam_obc.conf would look like this:
