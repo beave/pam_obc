@@ -17,7 +17,7 @@ install-data-local:
 	@echo "------------------------------------------------------------------------------"
 	@echo "\"pam_obc\" has been installed!"
 	@echo ""
-	@echo "For more information on configuration,  please see the README file or:"
+	@echo "For more information on configuration,  please see the README file or"
 	@echo "https://github.com/beave/pam_obc/blob/master/README.md"
 	@echo "------------------------------------------------------------------------------"
 

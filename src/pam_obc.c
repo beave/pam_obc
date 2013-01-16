@@ -167,9 +167,11 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	signal (SIGFPE,  &sigtrap );
 	signal (SIGSEGV, &sigtrap );
 
+	syslog(LOG_ALERT,"pam_obc: Using pam_obc version %s.",VERSION);
+
         msg = (char *) malloc(PAM_MAX_MSG_SIZE);
         if (msg == NULL) {
-                syslog(LOG_ALERT, "pam_obc: Error: Unable to malloc");
+                syslog(LOG_ALERT, "pam_obc: Error: Unable to malloc.");
                 return(PAM_SERVICE_ERR);
         }
 
@@ -185,7 +187,7 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	}
 
 	if ((pw = getpwnam(pam_uname)) == NULL) {
-	    syslog(LOG_ALERT,"pam_obc: User %s does not exist", pam_uname);	
+	    syslog(LOG_ALERT,"pam_obc: User %s does not exist.", pam_uname);	
 
 #ifdef WITH_FAKE_CHALLENGE
 
@@ -201,14 +203,14 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	/* get user's out-of-band action from pam_obc.conf */
 	if ( (action = obc_action(pam_uname)) == NULL) {
 	        
-		syslog(LOG_ALERT,"pam_obc: User %s unknown - continuing",pam_uname);
+		syslog(LOG_ALERT,"pam_obc: User %s unknown - continuing.",pam_uname);
 #ifndef WITH_FAKE_CHALLENGE
 		return(PAM_SUCCESS);
 #endif
 
 #ifdef WITH_FAKE_CHALLENGE
 
-		syslog(LOG_ALERT,"pam_obc: User %s unknown [sending fake OBC] ",pam_uname);
+		syslog(LOG_ALERT,"pam_obc: User %s unknown [sending fake OBC]",pam_uname);
 		sleep(2);               /* Give the illusion we're doing something */
 		retval = pam_get_item(pamh, PAM_CONV, (const void **)&conversation);
 		conversation -> conv(1, (const struct pam_message **)&pmessage, &response, conversation ->appdata_ptr);
@@ -219,7 +221,7 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	/* generate random out-of-band challenge */
 	obc = obc_gen();
 	if (obc == NULL) {
-		syslog(LOG_ALERT,"pam_obc: ERROR: obc_gen() failed");
+		syslog(LOG_ALERT,"pam_obc: ERROR: obc_gen() failed.");
 		return(PAM_SERVICE_ERR);
 	} 
 
@@ -227,7 +229,7 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	snprintf(act_str, sizeof(act_str), "echo %s | %s",obc,action);
 
 	if ( system(act_str) == -1) 
-		syslog(LOG_ALERT,"pam_obc: Error sending out-of-band challenge");
+		syslog(LOG_ALERT,"pam_obc: Error sending out-of-band challenge.");
 
 	/* borrowed pam_get_item logic from pam_skey */
 	retval = pam_get_item(pamh, PAM_CONV, (const void **)&conversation);
@@ -247,10 +249,10 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	}
 	
 	if ((strcmp(obc,response->resp)) == 0) {
-		syslog(LOG_ALERT,"pam_obc: Authenticated user %s using out-of-band challenge",pam_uname);
+		syslog(LOG_ALERT,"pam_obc: Authenticated user %s using out-of-band challenge.",pam_uname);
 		retval=PAM_SUCCESS;
 	} else {
-		syslog(LOG_ALERT,"pam_obc: Failed auth for user %s using out-of-band challenge",pam_uname);
+		syslog(LOG_ALERT,"pam_obc: Failed auth for user %s using out-of-band challenge.",pam_uname);
 		retval=PAM_AUTH_ERR;
 	}
 

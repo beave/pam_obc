@@ -152,7 +152,7 @@
 #define VERSION "pam_obc-0.5-git"
 
 /* With Fake Challenges */
-/* #undef WITH_FAKE_CHALLENGE */
+#define WITH_FAKE_CHALLENGE 1
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */
