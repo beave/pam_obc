@@ -701,6 +701,9 @@ install-data-local:
 
 	@echo "------------------------------------------------------------------------------"
 	@echo "\"pam_obc\" has been installed!"
+	@echo ""
+	@echo "For more information on configuration,  please see:"
+	@echo "https://wiki.quadrantsec.com/bin/view/Main/PamOBC"
 	@echo "------------------------------------------------------------------------------"
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

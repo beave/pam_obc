@@ -16,5 +16,8 @@ install-data-local:
 
 	@echo "------------------------------------------------------------------------------"
 	@echo "\"pam_obc\" has been installed!"
+	@echo ""
+	@echo "For more information on configuration,  please see:"
+	@echo "https://wiki.quadrantsec.com/bin/view/Main/PamOBC"
 	@echo "------------------------------------------------------------------------------"
 
