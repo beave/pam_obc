@@ -67,6 +67,10 @@ as su and sudo.  When testing make _sure_ you have a "root" session open and
 _verify_ pam_obc is working properly.  In the past,  I've had to play
 with /etc/pam.d/{filename} to get pam_obc to function properly.
 
+If you're looking to use pam_obc with sshd, make sure that in your sshd_conf
+has this line: "ChallengeResponseAuthentication yes"
+
+
 EXAMPLE 1:  Challenge at the console.
 -------------------------------------
 
