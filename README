@@ -2,6 +2,29 @@ Orignally By : Paul Sery | <pgsery@swcp.com>
 
 Modified by  : Champ Clark | <cclark@quadrantsec.com>
 
+DESCRIPTION:
+------------
+
+Provides an out-of-band challenge-response authentication mechanism.
+When a user tries to authenticate, pam_obc looks for the user name
+in pam_obc.conf. If the user name exists, pam_obc executes the
+associated action to deliver a challenge (a random string) to the user.
+The user is authenticated if able to answer the challenge.
+
+The out-of-band challenge provides a useful mechanism for authenticating
+temporary or transient users. It could also provide an inexpensive "true"
+two-factor authentication if coupled with, for instance, a static password
+or public-key. For instance, OpenSSH has a patch that allows multiple
+authentication methods (see https://bugzilla.mindrot.org/show_bug.cgi?id=983)
+
+OBC could also be used to improve web-based authentication.
+
+It should be noted that pam_obc doesn't not control "how" the challenge
+is sent to the user.  It only generates and verifies that the challenge
+and response are the same.  It is up to you to come up a means of secure
+transport of the challenge strings.  Examples are below.
+
+
 COMPILING:
 ----------
 
@@ -18,28 +41,6 @@ it easier for an attacker to enumerate users.
 
 To alter the behavior of pam_obc further,  see the pam_obc.h file 
 (see https://github.com/beave/pam_obc/blob/master/src/pam_obc.h).
-
-DESCRIPTION:
-------------
-
-Provides an out-of-band challenge-response authentication mechanism. 
-When a user tries to authenticate, pam_obc looks for the user name 
-in pam_obc.conf. If the user name exists, pam_obc executes the 
-associated action to deliver a challenge (a random string) to the user. 
-The user is authenticated if able to answer the challenge.
-
-The out-of-band challenge provides a useful mechanism for authenticating
-temporary or transient users. It could also provide an inexpensive "true"
-two-factor authentication if coupled with, for instance, a static password
-or public-key. For instance, OpenSSH has a patch that allows multiple 
-authentication methods (see https://bugzilla.mindrot.org/show_bug.cgi?id=983)
-
-OBC could also be used to improve web-based authentication.
-
-It should be noted that pam_obc doesn't not control "how" the challenge
-is sent to the user.  It only generates and verifies that the challenge
-and response are the same.  It is up to you to come up a means of secure
-transport of the challenge strings.  Examples are below.
 
 CONFIGURATION FILE:
 -------------------
