@@ -24,7 +24,7 @@ is sent to the user.  It only generates and verifies that the challenge
 and response are the same.  It is up to you to come up a means of secure
 transport of the challenge strings.  Examples are below.
 
-A short video showing pam_obc can be see at http://www.youtube.com/watch?v=3-vrP2tU6c8
+A short video showing pam_obc in action can be seen at http://www.youtube.com/watch?v=3-vrP2tU6c8
 (The video show pam_obc sending challenges via Jabber/XMPP over SSL).
 
 
