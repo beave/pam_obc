@@ -202,7 +202,7 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	/* get user's out-of-band action from pam_obc.conf */
 	if ( (action = obc_action(pam_uname)) == NULL) {
 	        
-		syslog(LOG_ALERT,"pam_obc: User %s unknown - continuing.",pam_uname);
+		syslog(LOG_ALERT,"pam_obc: User %s not in /etc/pam_obc.conf",pam_uname);
 #ifndef WITH_FAKE_CHALLENGE
 		return(PAM_SUCCESS);
 #endif
