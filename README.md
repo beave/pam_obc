@@ -2,6 +2,21 @@ Orignally By : Paul Sery | <pgsery@swcp.com>
 
 Modified by  : Champ Clark | <cclark@quadrantsec.com>
 
+COMPILING:
+----------
+
+Compiling is pretty straight forward.  The typical:
+
+	./configure && make && make install
+
+Should work.  The only compile time flag you may wish to alter is the 
+"--disable-fake-challenge".  By default,  reguardless of if the user exists
+and/or is in the pam_obc.conf a "Challenge:" prompt is sent.  If this
+option is disabled,  then "Challenge" prompts will _only_ be sent to
+people in the /etc/pam_obc.conf.  If this option is disabled,  it'll make
+it easier for an attacker to enumerate users.
+
+To alter the behavior of pam_obc further,  see the pam_obc.h file.
 
 DESCRIPTION:
 ------------
