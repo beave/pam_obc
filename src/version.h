@@ -1,1 +1,1 @@
-#define VERSION "pamobc-0.2"
+#define VERSION "pam_obc-0.5-git"

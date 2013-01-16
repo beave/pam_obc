@@ -58,7 +58,7 @@ obc_action(const char *pam_uname)
 	if (fp == NULL) {
 		fp = fopen("/usr/local/etc/pam_obc.conf", "r");
 		if (fp == NULL) {
-			syslog(LOG_ALERT,"pam_obc[%d] ERROR: can't open pam_obc.conf",getpid());
+			syslog(LOG_ALERT,"pam_obc: Error, can't open pam_obc.conf");
 			return (NULL);
 		}
 	}
@@ -91,7 +91,7 @@ obc_action(const char *pam_uname)
 	fclose(fp);
 
 	if (!user_exists) {
-		syslog(LOG_ALERT,"pam_obc[%d] ERROR: pam user %s not found in pam_obc.conf",getpid(),pam_uname);
+		syslog(LOG_ALERT,"pam_obc: User %s was not found in pam_obc.conf!", pam_uname);
 		action=NULL;
 	}
 
@@ -109,12 +109,12 @@ obc_gen(void)
 
 	fp = fopen("/dev/random","r");
 	if (fp == NULL) {
-		syslog(LOG_ALERT,"pam_obc[%d] ERROR: can't open /dev/random",getpid());
+		syslog(LOG_ALERT,"pam_obc: Error: can't open /dev/random");
 		return (NULL);
 	}
 	if ( fread(&seed,sizeof(seed),1,fp) == 0) {
 		return (NULL);
-		syslog(LOG_ALERT,"pam_obc[%d] ERROR: can't read /dev/random",getpid());
+		syslog(LOG_ALERT,"pam_obc: Error: can't read /dev/random");
 	}
 	fclose(fp);
 
@@ -167,52 +167,70 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	signal (SIGFPE,  &sigtrap );
 	signal (SIGSEGV, &sigtrap );
 
+        msg = (char *) malloc(PAM_MAX_MSG_SIZE);
+        if (msg == NULL) {
+                syslog(LOG_ALERT, "pam_obc: Error: Unable to malloc");
+                return(PAM_SERVICE_ERR);
+        }
+
+        snprintf(msg, PAM_MAX_MSG_SIZE, OBC_PROMPT);
+        message.msg_style = PAM_PROMPT_ECHO_OFF;
+        message.msg = msg;
+
 	retval = pam_get_item (pamh, PAM_USER, (const void **)&pam_uname);
 
 	if ( retval != PAM_SUCCESS) {
-                syslog(LOG_ALERT,"pam_obc[%d] PAM user name error: %d",getpid(),retval);
+                syslog(LOG_ALERT,"pam_obc: Error: PAM user name error: %d",retval);
 		return (PAM_SERVICE_ERR);
 	}
-	if ((pw = getpwnam(pam_uname)) == NULL) {
-                syslog(LOG_ALERT,"pam_obc[%d] pam user %s does not exist [using normal authentication]",getpid(),pam_uname);
-		 return (PAM_SERVICE_ERR);
 
+	if ((pw = getpwnam(pam_uname)) == NULL) {
+		
+		if ( OBC_FAKE == 0 ) { 
+                syslog(LOG_ALERT,"pam_obc: User %s does not exist [using normal authentication]", pam_uname);
+		return(PAM_SERVICE_ERR);
+		} else { 
+		syslog(LOG_ALERT,"pam_obc: User %s does not exist [sending fake OBC]", pam_uname);
+		sleep(2);		/* Give the illusion we're doing something */
+        	retval = pam_get_item(pamh, PAM_CONV, (const void **)&conversation);
+        	conversation -> conv(1, (const struct pam_message **)&pmessage, &response, conversation ->appdata_ptr);
+                return(PAM_SERVICE_ERR);
+		}
 	}
 
 	/* get user's out-of-band action from pam_obc.conf */
 	if ( (action = obc_action(pam_uname)) == NULL) {
-		syslog(LOG_ALERT,"pam_obc[%d] ERROR: user %s unknown - continuing",getpid(),pam_uname);
-		return PAM_SUCCESS;
+
+		if ( OBC_FAKE == 0 ) { 
+		syslog(LOG_ALERT,"pam_obc: User %s unknown - continuing",pam_uname);
+		return(PAM_SUCCESS);
 		exit(0);
+		} else { 
+		syslog(LOG_ALERT,"pam_obc: User %s unknown [sending fake OBC] ",pam_uname);
+		sleep(2);               /* Give the illusion we're doing something */
+		retval = pam_get_item(pamh, PAM_CONV, (const void **)&conversation);
+		conversation -> conv(1, (const struct pam_message **)&pmessage, &response, conversation ->appdata_ptr);
+		return(PAM_SERVICE_ERR);
+		}
 	} 
 
 	/* generate random out-of-band challenge */
 	obc = obc_gen();
 	if (obc == NULL) {
-		syslog(LOG_ALERT,"pam_obc[%d] ERROR: obc_gen failed",getpid());
+		syslog(LOG_ALERT,"pam_obc: ERROR: obc_gen() failed");
 		return(PAM_SERVICE_ERR);
 	} 
 
 	/* deliver out-of-band challenge */
-	snprintf(act_str, sizeof(act_str),
-		"echo %s | %s",obc,action);
+	snprintf(act_str, sizeof(act_str), "echo %s | %s",obc,action);
+
 	if ( system(act_str) == -1) 
-		syslog(LOG_ALERT,"pam_obc[%d] ERROR sending out-of-band challenge",getpid());
-
-	msg = (char *) malloc(PAM_MAX_MSG_SIZE);
-	if (msg == NULL) {
-		syslog(LOG_ALERT, "unable to malloc\n");
-		return(PAM_SERVICE_ERR);
-	}
-
-	snprintf(msg, PAM_MAX_MSG_SIZE, "Challenge: ");
-	message.msg_style = PAM_PROMPT_ECHO_OFF;
-	message.msg = msg;
+		syslog(LOG_ALERT,"pam_obc: Error sending out-of-band challenge");
 
 	/* borrowed pam_get_item logic from pam_skey */
 	retval = pam_get_item(pamh, PAM_CONV, (const void **)&conversation);
 	if (retval != PAM_SUCCESS) {
-                syslog(LOG_ALERT,"pam_obc[%d] PAM get item error: %d",getpid(),retval);
+                syslog(LOG_ALERT,"pam_obc: PAM get item error: %d",retval);
 		return(PAM_SERVICE_ERR);
 	}
 
@@ -222,15 +240,15 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	/* borrowed pam_set_item logic from pam_skey */
 	retval = pam_set_item(pamh, PAM_AUTHTOK, response->resp);
 	if (retval != PAM_SUCCESS) {
-                syslog(LOG_ALERT,"pam_obc[%d] PAM set item error: %d",getpid(),retval);
+                syslog(LOG_ALERT,"pam_obc: PAM set item error: %d", retval);
 		return(PAM_SERVICE_ERR);
 	}
 	
 	if ((strcmp(obc,response->resp)) == 0) {
-		syslog(LOG_ALERT,"pam_obc[%d] Authenticated user %s using out-of-band challenge",getpid(),pam_uname);
+		syslog(LOG_ALERT,"pam_obc: Authenticated user %s using out-of-band challenge",pam_uname);
 		retval=PAM_SUCCESS;
 	} else {
-		syslog(LOG_ALERT,"pam_obc[%d] Failed auth for user %s using out-of-band challenge",getpid(),pam_uname);
+		syslog(LOG_ALERT,"pam_obc: Failed auth for user %s using out-of-band challenge",pam_uname);
 		retval=PAM_AUTH_ERR;
 	}
 

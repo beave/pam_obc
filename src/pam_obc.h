@@ -26,3 +26,12 @@
 
 #define OBC_ACTION_SIZE 255
 
+/* Challenge Prompt */
+
+#define OBC_PROMPT	"Challenge: "
+
+/* If set,  we send a fake "challenge" prompt.  This is to help preent user 
+ * enumeration */
+
+#define  OBC_FAKE 	1
+
