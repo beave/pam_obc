@@ -150,6 +150,9 @@
 /* Version number of package */
 #undef VERSION
 
+/* With Fake Challenges */
+#undef WITH_FAKE_CHALLENGE
+
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const
 

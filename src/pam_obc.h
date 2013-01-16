@@ -30,8 +30,3 @@
 
 #define OBC_PROMPT	"Challenge: "
 
-/* If set,  we send a fake "challenge" prompt.  This is to help preent user 
- * enumeration */
-
-#define  OBC_FAKE 	1
-

@@ -185,33 +185,35 @@ pam_sm_authenticate(pam_handle_t *pamh, int flags, int argc, const char **argv)
 	}
 
 	if ((pw = getpwnam(pam_uname)) == NULL) {
-		
-		if ( OBC_FAKE == 0 ) { 
-                syslog(LOG_ALERT,"pam_obc: User %s does not exist [using normal authentication]", pam_uname);
-		return(PAM_SERVICE_ERR);
-		} else { 
-		syslog(LOG_ALERT,"pam_obc: User %s does not exist [sending fake OBC]", pam_uname);
-		sleep(2);		/* Give the illusion we're doing something */
-        	retval = pam_get_item(pamh, PAM_CONV, (const void **)&conversation);
-        	conversation -> conv(1, (const struct pam_message **)&pmessage, &response, conversation ->appdata_ptr);
-                return(PAM_SERVICE_ERR);
-		}
+	    syslog(LOG_ALERT,"pam_obc: User %s does not exist", pam_uname);	
+
+#ifdef WITH_FAKE_CHALLENGE
+
+	    syslog(LOG_ALERT,"pam_obc: User %s does not exist [sending fake OBC]", pam_uname);
+   	    sleep(2);		/* Give the illusion we're doing something */
+            retval = pam_get_item(pamh, PAM_CONV, (const void **)&conversation);	/* Fake,  we don't care about return() */
+            conversation -> conv(1, (const struct pam_message **)&pmessage, &response, conversation ->appdata_ptr);
+#endif
+
+	return(PAM_SERVICE_ERR);
 	}
 
 	/* get user's out-of-band action from pam_obc.conf */
 	if ( (action = obc_action(pam_uname)) == NULL) {
-
-		if ( OBC_FAKE == 0 ) { 
+	        
 		syslog(LOG_ALERT,"pam_obc: User %s unknown - continuing",pam_uname);
+#ifndef WITH_FAKE_CHALLENGE
 		return(PAM_SUCCESS);
-		exit(0);
-		} else { 
+#endif
+
+#ifdef WITH_FAKE_CHALLENGE
+
 		syslog(LOG_ALERT,"pam_obc: User %s unknown [sending fake OBC] ",pam_uname);
 		sleep(2);               /* Give the illusion we're doing something */
 		retval = pam_get_item(pamh, PAM_CONV, (const void **)&conversation);
 		conversation -> conv(1, (const struct pam_message **)&pmessage, &response, conversation ->appdata_ptr);
 		return(PAM_SERVICE_ERR);
-		}
+#endif
 	} 
 
 	/* generate random out-of-band challenge */

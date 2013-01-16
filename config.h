@@ -116,7 +116,7 @@
 #define PACKAGE_NAME "pam_obn"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "pam_obc pamobc-0.2"
+#define PACKAGE_STRING "pam_obc pam_obc-0.5-git"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "pam_obc"
@@ -125,7 +125,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "pamobc-0.2"
+#define PACKAGE_VERSION "pam_obc-0.5-git"
 
 /* Define as the return type of signal handlers (`int' or `void'). */
 #define RETSIGTYPE void
@@ -149,7 +149,10 @@
 /* #undef TM_IN_SYS_TIME */
 
 /* Version number of package */
-#define VERSION "pamobc-0.2"
+#define VERSION "pam_obc-0.5-git"
+
+/* With Fake Challenges */
+/* #undef WITH_FAKE_CHALLENGE */
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */
