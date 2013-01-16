@@ -41,7 +41,7 @@ PAM CONFIGURATION FORMAT:
 
 For example,  append the following to the end of the /etc/pam.d/sshd:
 
-auth       required    pam_obc.so
+	auth       required    pam_obc.so
 
 This can also be done with other tools requiring authentications, such
 as su and sudo.  When testing make _sure_ you have a "root" session open and
