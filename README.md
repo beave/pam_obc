@@ -18,7 +18,7 @@ or public-key.
 
 OBC could also be used to improve web-based authentication.
 
-It should be noted that pam_obc doesn't not control "how" the challenge
+It should be noted that pam_obc does not control "how" the challenge
 is sent to the user.  It only generates and verifies that the challenge
 and response are the same.  It is up to you to come up a means of secure
 transport of the challenge strings.  Examples are below.
