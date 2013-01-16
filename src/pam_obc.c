@@ -55,13 +55,10 @@ obc_action(const char *pam_uname)
         char *uname=NULL;
 
 	fp = fopen("/etc/pam_obc.conf", "r");
-	if (fp == NULL) {
-		fp = fopen("/usr/local/etc/pam_obc.conf", "r");
-		if (fp == NULL) {
-			syslog(LOG_ALERT,"pam_obc: Error, can't open pam_obc.conf");
+ 		if (fp == NULL) {
+			syslog(LOG_ALERT,"pam_obc: Error, can't open /etc/pam_obc.conf");
 			return (NULL);
 		}
-	}
 
 	/* parse the user configuration file - specifies obc for each user */ 
         while (fgets(line, sizeof(line), fp) != NULL)
