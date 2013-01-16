@@ -4276,6 +4276,21 @@ fi
 done
 
 
+for ac_header in security/pam_modules.h
+do :
+  ac_fn_c_check_header_mongrel "$LINENO" "security/pam_modules.h" "ac_cv_header_security_pam_modules_h" "$ac_includes_default"
+if test "x$ac_cv_header_security_pam_modules_h" = xyes; then :
+  cat >>confdefs.h <<_ACEOF
+#define HAVE_SECURITY_PAM_MODULES_H 1
+_ACEOF
+
+else
+  as_fn_error $? "PAM header files not found, install libpam-dev." "$LINENO" 5
+fi
+
+done
+
+
 # Check whether --enable-fake-challenge was given.
 if test "${enable_fake_challenge+set}" = set; then :
   enableval=$enable_fake_challenge;  FAKE_CHALLENGE="$enableval"
@@ -5185,7 +5200,7 @@ _ACEOF
   LIBS="-lpam $LIBS"
 
 else
-  as_fn_error $? "Cannot link to libpam." "$LINENO" 5
+  as_fn_error $? "Cannot link to libpam. Install libpam-dev" "$LINENO" 5
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for main in -lpam_misc" >&5
@@ -5226,7 +5241,7 @@ _ACEOF
   LIBS="-lpam_misc $LIBS"
 
 else
-  as_fn_error $? "Cannot link to libpam_misc" "$LINENO" 5
+  as_fn_error $? "Cannot link to libpam_misc.  Install libpam-dev" "$LINENO" 5
 fi
 
 
