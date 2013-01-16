@@ -14,8 +14,7 @@ The user is authenticated if able to answer the challenge.
 The out-of-band challenge provides a useful mechanism for authenticating
 temporary or transient users. It could also provide an inexpensive "true"
 two-factor authentication if coupled with, for instance, a static password
-or public-key. For instance, OpenSSH has a patch that allows multiple
-authentication methods (see https://bugzilla.mindrot.org/show_bug.cgi?id=983)
+or public-key. 
 
 OBC could also be used to improve web-based authentication.
 
