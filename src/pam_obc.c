@@ -63,9 +63,11 @@ obc_action(const char *pam_uname)
 	/* parse the user configuration file - specifies obc for each user */ 
         while (fgets(line, sizeof(line), fp) != NULL)
         {
-		/* skip comments (currently, # can be anywhere in the line) */
-		if ( strstr(line,"#") != NULL) 
-			continue;
+                /* Skip comments and blank lines */
+                if (line[0] == '#') continue;
+                if (line[0] == ';') continue;
+                if (line[0] == 10 ) continue;
+                if (line[0] == 32 ) continue;
 
 		/* strip trailing chars */
 		if ( (action=strstr(line,"\r")) != NULL)
