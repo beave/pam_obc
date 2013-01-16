@@ -20,7 +20,7 @@ OBC could also be used to improve web-based authentication.
 
 It should be noted that pam_obc does not control "how" the challenge
 is sent to the user.  It only generates and verifies that the challenge
-and response are the same.  It is up to you to come up a means of secure
+and response are the same.  It is up to you to come up with a means of secure
 transport of the challenge strings.  Examples are below.
 
 A short video showing pam_obc in action can be seen at http://www.youtube.com/watch?v=3-vrP2tU6c8
